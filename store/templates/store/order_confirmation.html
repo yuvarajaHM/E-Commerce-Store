@@ -1,0 +1,39 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<h1>Thank you for your order!</h1>
+<p>Your order number is <strong>#{{ order.id }}</strong>.</p>
+
+<h2>Order details</h2>
+<ul>
+    <li>Name: {{ order.full_name }}</li>
+    <li>Email: {{ order.email }}</li>
+    <li>Address: {{ order.address }}, {{ order.city }} {{ order.postal_code }}</li>
+</ul>
+
+<h2>Items</h2>
+<table class="cart-table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Line total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.price }}</td>
+            <td>₹{{ item.total_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><strong>Total:</strong> ₹{{ order.total_amount }}</p>
+
+<a class="btn" href="/">Back to products</a>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<h1>Sign up</h1>
+<form method="post" class="checkout-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn primary">Create account</button>
+</form>
+{% endblock %}

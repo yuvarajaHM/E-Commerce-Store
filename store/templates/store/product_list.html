@@ -1,0 +1,50 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<h1>Products</h1>
+
+<form method="get" class="filter-bar">
+    <input
+        type="text"
+        name="q"
+        placeholder="Search products..."
+        value="{{ current_query }}"
+    />
+    <select name="category">
+        <option value="">All categories</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if current_category == category.id|stringformat:'s' %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="sort">
+        <option value="-created_at" {% if current_sort == "-created_at" %}selected{% endif %}>Newest</option>
+        <option value="price_asc" {% if current_sort == "price_asc" %}selected{% endif %}>Price: Low to High</option>
+        <option value="price_desc" {% if current_sort == "price_desc" %}selected{% endif %}>Price: High to Low</option>
+    </select>
+
+    <button type="submit" class="btn">Apply</button>
+</form>
+
+<div class="product-grid">
+    {% for product in products %}
+        <div class="product-card">
+            {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image" />
+            {% endif %}
+            <h2>{{ product.name }}</h2>
+            {% if product.category %}
+                <p class="category-label">{{ product.category.name }}</p>
+            {% endif %}
+            <p class="price">₹{{ product.price }}</p>
+            <p class="description">{{ product.description|truncatechars:100 }}</p>
+            <div class="product-actions">
+                <a class="btn" href="{% url 'product_detail' product.pk %}">View details</a>
+                <a class="btn primary" href="{% url 'add_to_cart' product.pk %}">Add to cart</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No products available yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
